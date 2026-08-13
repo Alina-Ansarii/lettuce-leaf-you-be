@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Customer" format=3 uid="uid://cdyu1so18j0r0"]
+
+[ext_resource type="Script" uid="uid://c7bl3vp28c73x" path="res://scripts/Customer.gd" id="1_eeb74"]
+
+[resource]
+script = ExtResource("1_eeb74")
+display_name = "Trisha"
+dialogue_line = "The usual please, keep it crisp"
+metadata/_custom_type_script = "uid://c7bl3vp28c73x"

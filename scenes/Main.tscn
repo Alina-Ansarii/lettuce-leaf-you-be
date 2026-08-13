@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://drtjp0a55bk5m"]
+
+[ext_resource type="Script" uid="uid://dt0igqdfrskj1" path="res://scenes/Main.gd" id="1_elqb8"]
+
+[node name="Control" type="Control" unique_id=879643647]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_elqb8")
+
+[node name="NameLabel" type="Label" parent="." unique_id=494979895]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DialogueLabel" type="Label" parent="." unique_id=1069272712]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="ServeButton" type="Button" parent="." unique_id=1000757209]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Serve"
+
+[node name="ShooButton" type="Button" parent="." unique_id=102359379]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Shoo"
+
+[node name="ResultLabel" type="Label" parent="." unique_id=2012172139]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

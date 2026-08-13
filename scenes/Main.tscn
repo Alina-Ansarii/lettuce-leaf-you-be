@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://drtjp0a55bk5m"]
 
 [ext_resource type="Script" uid="uid://dt0igqdfrskj1" path="res://scenes/Main.gd" id="1_elqb8"]
+[ext_resource type="Texture2D" uid="uid://brx0qgg6d0s40" path="res://art/bg/cafe-blocked-out.png" id="2_0bbpv"]
+[ext_resource type="Texture2D" uid="uid://c18ydc37cp5dp" path="res://art/portraits/trisha-neutral-png.png" id="3_rarhs"]
 
 [node name="Control" type="Control" unique_id=879643647]
 layout_mode = 3
@@ -10,6 +12,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_elqb8")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1804040674]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_0bbpv")
+
+[node name="Portrait" type="TextureRect" parent="." unique_id=492516816]
+layout_mode = 0
+offset_left = 468.0
+offset_top = 46.0
+offset_right = 596.0
+offset_bottom = 174.0
+scale = Vector2(2, 2)
+texture = ExtResource("3_rarhs")
 
 [node name="NameLabel" type="Label" parent="." unique_id=494979895]
 layout_mode = 0

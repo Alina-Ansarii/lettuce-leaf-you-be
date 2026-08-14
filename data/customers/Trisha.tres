@@ -1,18 +1,10 @@
 [gd_resource type="Resource" script_class="Customer" format=3 uid="uid://cdyu1so18j0r0"]
 
 [ext_resource type="Script" uid="uid://c7bl3vp28c73x" path="res://scripts/Customer.gd" id="1_eeb74"]
-[ext_resource type="Texture2D" uid="uid://c18ydc37cp5dp" path="res://art/portraits/trisha-neutral-png.png" id="2_neutral"]
-[ext_resource type="Texture2D" uid="uid://wngxwsjep2kp" path="res://art/portraits/trisha-happy-png.png" id="3_happy"]
 
 [resource]
 script = ExtResource("1_eeb74")
 display_name = "Trisha"
-is_carnivore = false
-intro_lines = Array[String](["Morning, sunshine! Lovely day for a salad, isn't it?", "I'll have the usual — nice and crisp, all leaves, no funny business."])
-question_prompt = "Eaten anything unusual lately?"
-question_answer = "Unusual? Ha! Same fern salad every day for twelve years. I'm boring and proud."
-served_right = "Ooh, perfect crunch. You always get it right. See you tomorrow!"
-shooed_wrong = "W-what? Me?! I've come here for YEARS. How rude!"
-portrait_neutral = ExtResource("2_neutral")
-portrait_happy = ExtResource("3_happy")
+dialogue_line = "The usual please, keep it crisp"
+wanted_ingredients = Array[String](["fern", "bamboo"])
 metadata/_custom_type_script = "uid://c7bl3vp28c73x"

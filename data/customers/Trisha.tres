@@ -7,7 +7,12 @@
 [resource]
 script = ExtResource("1_eeb74")
 display_name = "Trisha"
-dialogue_line = "The usual please, keep it crisp"
+is_carnivore = false
+intro_lines = Array[String](["Morning, sunshine! Lovely day for a salad, isn't it?", "I'll have the usual — nice and crisp, all leaves, no funny business."])
+question_prompt = "Eaten anything unusual lately?"
+question_answer = "Unusual? Ha! Same fern salad every day for twelve years. I'm boring and proud."
+served_right = "Ooh, perfect crunch. You always get it right. See you tomorrow!"
+shooed_wrong = "W-what? Me?! I've come here for YEARS. How rude!"
 portrait_neutral = ExtResource("2_neutral")
 portrait_happy = ExtResource("3_happy")
 metadata/_custom_type_script = "uid://c7bl3vp28c73x"

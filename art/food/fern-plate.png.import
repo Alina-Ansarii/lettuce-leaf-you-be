@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wngxwsjep2kp"
-path="res://.godot/imported/trisha-happy-png.png-5c4286411abc34f5c1fd476bde89b245.ctex"
+uid="uid://bx882bbg2amxg"
+path="res://.godot/imported/fern-plate.png-a4868e013b9b4b575fcd8899da3ec984.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/portraits/trisha-happy-png.png"
-dest_files=["res://.godot/imported/trisha-happy-png.png-5c4286411abc34f5c1fd476bde89b245.ctex"]
+source_file="res://art/food/fern-plate.png"
+dest_files=["res://.godot/imported/fern-plate.png-a4868e013b9b4b575fcd8899da3ec984.ctex"]
 
 [params]
 

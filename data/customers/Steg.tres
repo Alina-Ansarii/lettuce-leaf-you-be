@@ -6,5 +6,9 @@
 script = ExtResource("1_eeb74")
 display_name = "Steg"
 is_carnivore = false
-dialogue_line = "Ohh... do you have ferns today? I do love a nice fern."
+intro_lines = Array[String](["Ohh... hello there. Slow morning, isn't it?", "Do you have ferns today? I do so love a nice, slow fern.", "Nothing that runs away. Ha. Ha. That was a joke."])
+question_prompt = "What did you have for dinner?"
+question_answer = "Dinner? A big pile of ferns, of course. And then... more ferns. I contain multitudes of ferns."
+served_right = "Mmm. Green and calm. Just how I like it. Thank you kindly."
+shooed_wrong = "Oh dear... did I do something wrong? I only wanted a fern..."
 metadata/_custom_type_script = "uid://c7bl3vp28c73x"

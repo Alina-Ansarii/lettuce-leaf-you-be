@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Customer" format=3 uid="uid://bcompyc000001"]
+
+[ext_resource type="Script" uid="uid://c7bl3vp28c73x" path="res://scripts/Customer.gd" id="1_eeb74"]
+
+[resource]
+script = ExtResource("1_eeb74")
+display_name = "Compy"
+is_carnivore = true
+intro_lines = Array[String](["Hi hi hi! Small table for one, please! Or — ooh — near the OTHER customers?", "I just LOVE watching people eat. So social. So... close.", "Vegan, obviously. Look at me, I'm tiny, what would I even hunt? *twitch*"])
+question_prompt = "Why so interested in the others?"
+question_answer = "Interested? Nooo. I'm just admiring how... plump and slow everyone looks today. For friendship reasons. *grins with too many teeth*"
+served_wrong = "Hehehe! Perfect. Don't mind me, I'll just... mingle. *scuttles toward the tables*"
+shooed_right = "Rats! Rumbled! You've got a sharp eye, chef. I'll find an easier lunch elsewhere!"
+metadata/_custom_type_script = "uid://c7bl3vp28c73x"

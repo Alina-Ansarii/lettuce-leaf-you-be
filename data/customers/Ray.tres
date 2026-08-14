@@ -6,5 +6,9 @@
 script = ExtResource("1_eeb74")
 display_name = "Ray"
 is_carnivore = true
-dialogue_line = "Me? A meat eater? Ha! I'm SO not a meat person. ...Is that your arm?"
+intro_lines = Array[String](["Hii there! Love the place. So cozy, so... full of customers.", "Me? Oh, I'm SUCH a plant person. Total herbivore. Biggest leaf fan you'll ever meet.", "Say... that Stegosaurus earlier looked delicious— I mean, LOVELY. Lovely dino."])
+question_prompt = "What'll you have, exactly?"
+question_answer = "Oh, you know... the salad. Definitely the salad. *licks lips* Is your kitchen open to the back, by any chance? Just... curious."
+served_wrong = "Heh heh... you actually served me? Adorable. I'll be back at closing. Bring the whole staff."
+shooed_right = "Wh— you can't PROVE anything! Fine, FINE, I'm going. ...This isn't over, salad-slinger."
 metadata/_custom_type_script = "uid://c7bl3vp28c73x"

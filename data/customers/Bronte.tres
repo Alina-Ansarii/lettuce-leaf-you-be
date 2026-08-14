@@ -6,5 +6,9 @@
 script = ExtResource("1_eeb74")
 display_name = "Bronte"
 is_carnivore = false
-dialogue_line = "Big day ahead! Pile the greens high, I've got a long neck to fill."
+intro_lines = Array[String](["BIG day ahead, friend!", "Pile the greens high — I've got a LOT of neck to fill.", "Zero interest in anything with a face, me. Just leaves. Mountains of leaves."])
+question_prompt = "Ever crave a bit of meat?"
+question_answer = "Meat? Bleh! My cousin tried it once and felt awful for a week. Not for me. Greens all the way."
+served_right = "Hah! Now THAT'S a mountain of salad. You're a lifesaver. Cheers!"
+shooed_wrong = "Hey! Come on, I'm just a big softie. That's not fair at all."
 metadata/_custom_type_script = "uid://c7bl3vp28c73x"

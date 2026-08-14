@@ -75,14 +75,14 @@ offset_top = 497.0
 offset_right = 160.0
 offset_bottom = 520.0
 
-[node name="OrderTicket" type="Panel" parent="."]
+[node name="OrderTicket" type="Panel" parent="." unique_id=1841514846]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 528.0
 offset_right = 180.0
 offset_bottom = 628.0
 
-[node name="OrderText" type="Label" parent="OrderTicket"]
+[node name="OrderText" type="Label" parent="OrderTicket" unique_id=973217806]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -121,7 +121,8 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.16078432, 0.18039216, 0.08627451, 1)
 autowrap_mode = 2
 
-[node name="PatienceBar" type="ProgressBar" parent="."]
+[node name="PatienceBar" type="ProgressBar" parent="." unique_id=784701217]
+layout_mode = 0
 offset_left = 468.0
 offset_top = 310.0
 offset_right = 724.0
@@ -130,7 +131,7 @@ max_value = 15.0
 value = 15.0
 show_percentage = false
 
-[node name="PatienceTimer" type="Timer" parent="."]
+[node name="PatienceTimer" type="Timer" parent="." unique_id=1208977199]
 wait_time = 15.0
 one_shot = true
 

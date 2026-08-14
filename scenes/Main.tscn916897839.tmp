@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://drtjp0a55bk5m"]
+
+[ext_resource type="Script" uid="uid://dt0igqdfrskj1" path="res://scenes/Main.gd" id="1_elqb8"]
+[ext_resource type="Texture2D" uid="uid://brx0qgg6d0s40" path="res://art/bg/cafe-blocked-out.png" id="2_0bbpv"]
+[ext_resource type="Texture2D" uid="uid://c18ydc37cp5dp" path="res://art/portraits/trisha-neutral-png.png" id="3_rarhs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_52qos"]
+bg_color = Color(0.8117647, 0.7411765, 0.54901963, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.16078432, 0.18039216, 0.08627451, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Control" type="Control" unique_id=879643647]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_elqb8")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1804040674]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_0bbpv")
+
+[node name="Portrait" type="TextureRect" parent="." unique_id=492516816]
+layout_mode = 0
+offset_left = 468.0
+offset_top = 46.0
+offset_right = 596.0
+offset_bottom = 174.0
+scale = Vector2(2, 2)
+texture = ExtResource("3_rarhs")
+
+[node name="NameLabel" type="Label" parent="." unique_id=494979895]
+layout_mode = 0
+offset_left = 438.0
+offset_top = 53.0
+offset_right = 478.0
+offset_bottom = 76.0
+
+[node name="ServeButton" type="Button" parent="." unique_id=1000757209]
+layout_mode = 0
+offset_left = 1045.0
+offset_top = 588.0
+offset_right = 1096.0
+offset_bottom = 619.0
+text = "Serve"
+
+[node name="ShooButton" type="Button" parent="." unique_id=102359379]
+layout_mode = 0
+offset_left = 1055.0
+offset_top = 495.0
+offset_right = 1102.0
+offset_bottom = 526.0
+text = "Shoo"
+
+[node name="ResultLabel" type="Label" parent="." unique_id=2012172139]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 497.0
+offset_right = 160.0
+offset_bottom = 520.0
+
+[node name="NextButton" type="Button" parent="." unique_id=344326581]
+layout_mode = 0
+offset_left = 353.0
+offset_top = 465.0
+offset_right = 535.0
+offset_bottom = 501.0
+text = "Next "
+
+[node name="DialogueBox" type="Panel" parent="." unique_id=1131076095]
+layout_mode = 0
+offset_left = 753.6228
+offset_top = 88.34814
+offset_right = 1133.6228
+offset_bottom = 178.34814
+theme_override_styles/panel = SubResource("StyleBoxFlat_52qos")
+
+[node name="DialogueLabel" type="Label" parent="DialogueBox" unique_id=1069272712]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.16078432, 0.18039216, 0.08627451, 1)
+autowrap_mode = 2

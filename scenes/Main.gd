@@ -10,6 +10,7 @@ extends Control
 @onready var plate: Plate = $Plate
 @onready var patience_bar: ProgressBar = $PatienceBar
 @onready var patience_timer: Timer = $PatienceTimer
+@onready var order_text: Label = $OrderTicket/OrderText
 
 var day_one: Array[Customer] = [
 	preload("res://data/customers/Trisha.tres"),
@@ -61,6 +62,7 @@ func _show_current_customer() -> void:
 	awaiting_advance = false
 	result_label.text = ""
 	name_label.text = cust.display_name
+	order_text.text = _order_ticket_text(cust)
 	_set_portrait(cust.portrait_neutral)
 	_set_buttons_enabled(true)
 	next_button.visible = false              # hide Next until they've judged
@@ -73,6 +75,16 @@ func _first_line(cust: Customer) -> String:
 		return str(dialogue[0]) if dialogue.size() > 0 else ""
 
 	return str(dialogue)
+
+#---------------------ORDER TICKET------------------------
+func _order_ticket_text(cust: Customer) -> String:
+	if cust.wanted_ingredients.is_empty():
+		return "No specific order"
+
+	var capitalized: Array[String] = []
+	for ingredient_id in cust.wanted_ingredients:
+		capitalized.append(str(ingredient_id).capitalize())
+	return "Order:\n%s" % ", ".join(capitalized)
 
 #---------------------TYPEWRITER------------------------
 #begin revealing a line one character at a time.

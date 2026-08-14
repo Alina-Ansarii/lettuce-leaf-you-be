@@ -75,6 +75,25 @@ offset_top = 497.0
 offset_right = 160.0
 offset_bottom = 520.0
 
+[node name="OrderTicket" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 528.0
+offset_right = 180.0
+offset_bottom = 628.0
+
+[node name="OrderText" type="Label" parent="OrderTicket"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "No specific order"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="NextButton" type="Button" parent="." unique_id=344326581]
 layout_mode = 0
 offset_left = 353.0

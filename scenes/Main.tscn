@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://dt0igqdfrskj1" path="res://scenes/Main.gd" id="1_elqb8"]
 [ext_resource type="Texture2D" uid="uid://brx0qgg6d0s40" path="res://art/bg/cafe-blocked-out.png" id="2_0bbpv"]
 [ext_resource type="Texture2D" uid="uid://c18ydc37cp5dp" path="res://art/portraits/trisha-neutral-png.png" id="3_rarhs"]
+[ext_resource type="Script" uid="uid://ck3l3yyd3vmxd" path="res://scripts/Plate.gd" id="4_plate"]
+[ext_resource type="Script" uid="uid://dv30fmghk1sc8" path="res://scripts/DraggableIngredient.gd" id="5_drag"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_52qos"]
 bg_color = Color(0.8117647, 0.7411765, 0.54901963, 1)
@@ -99,3 +101,209 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.16078432, 0.18039216, 0.08627451, 1)
 autowrap_mode = 2
+
+[node name="Plate" type="Control" parent="."]
+layout_mode = 0
+offset_left = 580.0
+offset_top = 540.0
+offset_right = 908.0
+offset_bottom = 600.0
+script = ExtResource("4_plate")
+
+[node name="PlateLabel" type="Label" parent="Plate"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Plate: empty"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IngredientTray" type="Control" parent="."]
+layout_mode = 0
+offset_left = 580.0
+offset_top = 452.0
+offset_right = 916.0
+offset_bottom = 508.0
+
+[node name="Fern" type="Control" parent="IngredientTray"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 48.0
+offset_bottom = 48.0
+script = ExtResource("5_drag")
+ingredient_id = "fern"
+
+[node name="ColorRect" type="ColorRect" parent="IngredientTray/Fern"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="IngredientTray/Fern"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "Fern"
+
+[node name="Bamboo" type="Control" parent="IngredientTray"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 0.0
+offset_right = 104.0
+offset_bottom = 48.0
+script = ExtResource("5_drag")
+ingredient_id = "bamboo"
+
+[node name="ColorRect" type="ColorRect" parent="IngredientTray/Bamboo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="IngredientTray/Bamboo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "Bamboo"
+
+[node name="Cactus" type="Control" parent="IngredientTray"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 0.0
+offset_right = 160.0
+offset_bottom = 48.0
+script = ExtResource("5_drag")
+ingredient_id = "cactus"
+
+[node name="ColorRect" type="ColorRect" parent="IngredientTray/Cactus"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="IngredientTray/Cactus"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "Cactus"
+
+[node name="Beet" type="Control" parent="IngredientTray"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 0.0
+offset_right = 216.0
+offset_bottom = 48.0
+script = ExtResource("5_drag")
+ingredient_id = "beet"
+
+[node name="ColorRect" type="ColorRect" parent="IngredientTray/Beet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="IngredientTray/Beet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "Beet"
+
+[node name="Mushroom" type="Control" parent="IngredientTray"]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 0.0
+offset_right = 272.0
+offset_bottom = 48.0
+script = ExtResource("5_drag")
+ingredient_id = "mushroom"
+
+[node name="ColorRect" type="ColorRect" parent="IngredientTray/Mushroom"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="IngredientTray/Mushroom"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "Mushroom"
+
+[node name="Flower" type="Control" parent="IngredientTray"]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 0.0
+offset_right = 328.0
+offset_bottom = 48.0
+script = ExtResource("5_drag")
+ingredient_id = "flower"
+
+[node name="ColorRect" type="ColorRect" parent="IngredientTray/Flower"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="IngredientTray/Flower"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "Flower"

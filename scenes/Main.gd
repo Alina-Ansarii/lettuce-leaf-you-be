@@ -7,6 +7,7 @@ extends Control
 @onready var result_label: Label = $ResultLabel
 @onready var portrait: TextureRect = $Portrait
 @onready var next_button: Button = $NextButton
+@onready var plate: Plate = $Plate
 
 var day_one: Array[Customer] = [
 	preload("res://data/customers/Trisha.tres"),
@@ -41,11 +42,13 @@ func _ready() -> void:
 	_show_current_customer()
 
 func _show_current_customer() -> void:
-	var cust := Game.get_current_customer()
+	var cust: Customer = Game.get_current_customer()
 
 	if cust == null:
 		_end_day()
 		return
+
+	plate.clear_plate()
 
 	awaiting_advance = false
 	result_label.text = ""
@@ -112,11 +115,11 @@ func _on_shoo()-> void:
 	_judge(true)
 
 func _judge(chose_shoo: bool) -> void:
-	var cust := Game.get_current_customer()
+	var cust: Customer = Game.get_current_customer()
 	if cust == null:
 		return
 
-	var correct := Game.judge(cust, chose_shoo)
+	var correct: bool = Game.judge(cust, chose_shoo)
 
 	#expression handling
 	if correct:
@@ -140,7 +143,7 @@ func _judge(chose_shoo: bool) -> void:
 #--------------Advancing
 
 func _advance() -> void:
-	var has_more := Game.next_customer()
+	var has_more: bool = Game.next_customer()
 	if has_more:
 		_show_current_customer()
 	else:

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Customer" format=3 uid="uid://brayc00000001"]
+
+[ext_resource type="Script" uid="uid://c7bl3vp28c73x" path="res://scripts/Customer.gd" id="1_eeb74"]
+
+[resource]
+script = ExtResource("1_eeb74")
+display_name = "Ray"
+is_carnivore = true
+dialogue_line = "Me? A meat eater? Ha! I'm SO not a meat person. ...Is that your arm?"
+metadata/_custom_type_script = "uid://c7bl3vp28c73x"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Customer" format=3 uid="uid://bbrontec00001"]
+
+[ext_resource type="Script" uid="uid://c7bl3vp28c73x" path="res://scripts/Customer.gd" id="1_eeb74"]
+
+[resource]
+script = ExtResource("1_eeb74")
+display_name = "Bronte"
+is_carnivore = false
+dialogue_line = "Big day ahead! Pile the greens high, I've got a long neck to fill."
+metadata/_custom_type_script = "uid://c7bl3vp28c73x"

@@ -8,6 +8,8 @@ extends Control
 @onready var portrait: TextureRect = $Portrait
 @onready var next_button: Button = $NextButton
 @onready var plate: Plate = $Plate
+@onready var patience_bar: ProgressBar = $PatienceBar
+@onready var patience_timer: Timer = $PatienceTimer
 
 var day_one: Array[Customer] = [
 	preload("res://data/customers/Trisha.tres"),
@@ -32,6 +34,7 @@ func _ready() -> void:
 	serve_button.pressed.connect(_on_serve)
 	shoo_button.pressed.connect(_on_shoo)
 	next_button.pressed.connect(_advance)
+	patience_timer.timeout.connect(_on_patience_timeout)
 
 	# Build the typewriter timer in code (no scene node needed).
 	_type_timer = Timer.new()
@@ -49,6 +52,11 @@ func _show_current_customer() -> void:
 		return
 
 	plate.clear_plate()
+
+	patience_timer.wait_time = cust.patience_seconds
+	patience_bar.max_value = cust.patience_seconds
+	patience_bar.value = cust.patience_seconds
+	patience_timer.start()
 
 	awaiting_advance = false
 	result_label.text = ""
@@ -94,6 +102,29 @@ func _set_portrait(tex: Texture2D) -> void:
 	if tex != null:
 		portrait.texture = tex
 
+#---------------------PATIENCE------------------------
+func _process(_delta: float) -> void:
+	if not patience_timer.is_stopped():
+		patience_bar.value = patience_timer.time_left
+
+func _on_patience_timeout() -> void:
+	var cust: Customer = Game.get_current_customer()
+	if cust == null:
+		return
+
+	Game.penalize_impatience()
+	_set_portrait(cust.portrait_angry)
+	result_label.text = "%s got impatient and left! (lives: %d)" % [cust.display_name, Game.lives]
+
+	plate.clear_plate()
+
+	awaiting_advance = true
+	_set_buttons_enabled(false)              # lock Serve/Shoo, same as a judged answer
+	next_button.visible = true               # reveal Next so they can move on
+
+	if Game.is_game_over():
+		_game_over()
+
 
 
 #----------------JUDGING------------------------
@@ -118,6 +149,8 @@ func _judge(chose_shoo: bool) -> void:
 	var cust: Customer = Game.get_current_customer()
 	if cust == null:
 		return
+
+	patience_timer.stop()
 
 	var correct: bool = Game.judge(cust, chose_shoo, plate.ingredients)
 

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="Customer" format=3 uid="uid://bdiloc0000001"]
+
+[ext_resource type="Script" uid="uid://c7bl3vp28c73x" path="res://scripts/Customer.gd" id="1_eeb74"]
+[ext_resource type="Texture2D" path="res://art/portraits/dilo-neutral.png" id="2_neutral"]
+[ext_resource type="Texture2D" path="res://art/portraits/dilo-happy.png" id="3_happy"]
+[ext_resource type="Texture2D" path="res://art/portraits/dilo-caught.png" id="4_caught"]
+[ext_resource type="Texture2D" path="res://art/portraits/dilo-disgusted.png" id="5_disgust"]
+
+[resource]
+script = ExtResource("1_eeb74")
+display_name = "Dilo"
+is_carnivore = true
+intro_lines = Array[String](["Greetings. Charming little establishment you run here.", "I'm told the... clientele here is very tender. Well-fed. I mean FRIENDLY.", "Vegan? Oh, absolutely. Couldn't harm a fly. *frill flares slightly*"])
+question_prompt = "You seem to be sizing us up..."
+question_answer = "Sizing you up? Ha. I'm simply appreciating the... cuts of the day. The DISHES. The vegan dishes."
+served_wrong = "Foolish. You've let the frill-necked hunter right in. Dim the lights on your way out."
+shooed_right = "Hsssss- so you're not as dim as you look. Very well. I hunt elsewhere tonight."
+patience_seconds = 13.0
+portrait_neutral = ExtResource("2_neutral")
+portrait_happy = ExtResource("3_happy")
+portrait_caught = ExtResource("4_caught")
+portrait_disgusted = ExtResource("5_disgust")
+metadata/_custom_type_script = "uid://c7bl3vp28c73x"

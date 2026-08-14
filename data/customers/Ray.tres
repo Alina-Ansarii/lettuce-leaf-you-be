@@ -1,14 +1,23 @@
 [gd_resource type="Resource" script_class="Customer" format=3 uid="uid://brayc00000001"]
 
 [ext_resource type="Script" uid="uid://c7bl3vp28c73x" path="res://scripts/Customer.gd" id="1_eeb74"]
+[ext_resource type="Texture2D" path="res://art/portraits/ray-neutral.png" id="2_neutral"]
+[ext_resource type="Texture2D" path="res://art/portraits/ray-happy.png" id="3_happy"]
+[ext_resource type="Texture2D" path="res://art/portraits/ray-caught.png" id="4_caught"]
+[ext_resource type="Texture2D" path="res://art/portraits/ray-disgusted.png" id="5_disgust"]
 
 [resource]
 script = ExtResource("1_eeb74")
 display_name = "Ray"
 is_carnivore = true
-intro_lines = Array[String](["Hii there! Love the place. So cozy, so... full of customers.", "Me? Oh, I'm SUCH a plant person. Total herbivore. Biggest leaf fan you'll ever meet.", "Say... that Stegosaurus earlier looked delicious— I mean, LOVELY. Lovely dino."])
+intro_lines = Array[String](["Hii there! Love the place. So cozy, so... full of customers.", "Me? Oh, I'm SUCH a plant person. Biggest leaf fan you'll ever meet.", "Say... that Stegosaurus earlier looked delicious - I mean, LOVELY."])
 question_prompt = "What'll you have, exactly?"
-question_answer = "Oh, you know... the salad. Definitely the salad. *licks lips* Is your kitchen open to the back, by any chance? Just... curious."
+question_answer = "Oh, the salad. Definitely the salad. *licks lips* Is your kitchen open to the back, by any chance?"
 served_wrong = "Heh heh... you actually served me? Adorable. I'll be back at closing. Bring the whole staff."
-shooed_right = "Wh— you can't PROVE anything! Fine, FINE, I'm going. ...This isn't over, salad-slinger."
+shooed_right = "Wh- you can't PROVE anything! Fine, FINE, I'm going. This isn't over, salad-slinger."
+patience_seconds = 14.0
+portrait_neutral = ExtResource("2_neutral")
+portrait_happy = ExtResource("3_happy")
+portrait_caught = ExtResource("4_caught")
+portrait_disgusted = ExtResource("5_disgust")
 metadata/_custom_type_script = "uid://c7bl3vp28c73x"

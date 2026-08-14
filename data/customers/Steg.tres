@@ -1,14 +1,22 @@
 [gd_resource type="Resource" script_class="Customer" format=3 uid="uid://bstegc0000001"]
 
 [ext_resource type="Script" uid="uid://c7bl3vp28c73x" path="res://scripts/Customer.gd" id="1_eeb74"]
+[ext_resource type="Texture2D" path="res://art/portraits/steg-neutral.png" id="2_neutral"]
+[ext_resource type="Texture2D" path="res://art/portraits/steg-happy.png" id="3_happy"]
+[ext_resource type="Texture2D" path="res://art/portraits/steg-upset.png" id="4_upset"]
 
 [resource]
 script = ExtResource("1_eeb74")
 display_name = "Steg"
 is_carnivore = false
-intro_lines = Array[String](["Ohh... hello there. Slow morning, isn't it?", "Do you have ferns today? I do so love a nice, slow fern.", "Nothing that runs away. Ha. Ha. That was a joke."])
+intro_lines = Array[String](["Ohh... hello there. Slow morning, isn't it?", "Do you have ferns and bamboo today? I do love a nice, slow fern.", "Nothing that runs away. Ha. Ha. That was a joke."])
 question_prompt = "What did you have for dinner?"
-question_answer = "Dinner? A big pile of ferns, of course. And then... more ferns. I contain multitudes of ferns."
+question_answer = "Dinner? A big pile of ferns. And then... more ferns. I contain multitudes of ferns."
 served_right = "Mmm. Green and calm. Just how I like it. Thank you kindly."
 shooed_wrong = "Oh dear... did I do something wrong? I only wanted a fern..."
+wanted_ingredients = Array[String](["fern", "bamboo"])
+patience_seconds = 16.0
+portrait_neutral = ExtResource("2_neutral")
+portrait_happy = ExtResource("3_happy")
+portrait_angry = ExtResource("4_upset")
 metadata/_custom_type_script = "uid://c7bl3vp28c73x"

@@ -2,21 +2,40 @@
 
 [ext_resource type="Script" uid="uid://dt0igqdfrskj1" path="res://scenes/Main.gd" id="1_elqb8"]
 [ext_resource type="Texture2D" uid="uid://brx0qgg6d0s40" path="res://art/bg/cafe-blocked-out.png" id="2_0bbpv"]
-[ext_resource type="Texture2D" uid="uid://c18ydc37cp5dp" path="res://art/portraits/trisha-neutral-png.png" id="3_rarhs"]
+[ext_resource type="Texture2D" uid="uid://hdpxb6kxkym4" path="res://art/portraits/trisha-neutral.png" id="3_rarhs"]
 [ext_resource type="Script" uid="uid://ck3l3yyd3vmxd" path="res://scripts/Plate.gd" id="4_plate"]
 [ext_resource type="Script" uid="uid://dv30fmghk1sc8" path="res://scripts/DraggableIngredient.gd" id="5_drag"]
+[ext_resource type="Texture2D" uid="uid://dsdbr2aaltxpe" path="res://art/food/plate.png" id="6_platetex"]
+[ext_resource type="Texture2D" uid="uid://bqllrdpwsqoee" path="res://art/food/fern.png" id="7_fern"]
+[ext_resource type="Texture2D" uid="uid://bihx4v25kytxd" path="res://art/food/bamboo.png" id="8_bamboo"]
+[ext_resource type="Texture2D" uid="uid://bp7m817tig50k" path="res://art/food/cactus.png" id="9_cactus"]
+[ext_resource type="Texture2D" uid="uid://bxwiy0guuww0b" path="res://art/food/beets.png" id="10_beet"]
+[ext_resource type="Texture2D" uid="uid://cluvna1g12dlw" path="res://art/food/mushroom.png" id="11_mushroom"]
+[ext_resource type="Texture2D" uid="uid://0ml4siunbx3u" path="res://art/food/flower.png" id="12_flower"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_52qos"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
 bg_color = Color(0.8117647, 0.7411765, 0.54901963, 1)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
 border_color = Color(0.16078432, 0.18039216, 0.08627451, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ticket"]
+bg_color = Color(0.99215686, 0.99215686, 0.96862745, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.16078432, 0.18039216, 0.08627451, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [node name="Control" type="Control" unique_id=879643647]
 layout_mode = 3
@@ -35,80 +54,43 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_0bbpv")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="Portrait" type="TextureRect" parent="." unique_id=492516816]
+[node name="HudLabel" type="Label" parent="." unique_id=1500000001]
 layout_mode = 0
-offset_left = 468.0
-offset_top = 46.0
-offset_right = 596.0
-offset_bottom = 174.0
-scale = Vector2(2, 2)
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 420.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0.99215686, 0.99215686, 0.96862745, 1)
+text = "Day 1    Score: 0    Lives: 3"
+
+[node name="Portrait" type="TextureRect" parent="." unique_id=492516816 groups=["portrait"]]
+layout_mode = 0
+offset_left = 476.0
+offset_top = 60.0
+offset_right = 676.0
+offset_bottom = 260.0
 texture = ExtResource("3_rarhs")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="NameLabel" type="Label" parent="." unique_id=494979895]
 layout_mode = 0
-offset_left = 438.0
-offset_top = 53.0
-offset_right = 478.0
-offset_bottom = 76.0
-
-[node name="ServeButton" type="Button" parent="." unique_id=1000757209]
-layout_mode = 0
-offset_left = 1045.0
-offset_top = 588.0
-offset_right = 1096.0
-offset_bottom = 619.0
-text = "Serve"
-
-[node name="ShooButton" type="Button" parent="." unique_id=102359379]
-layout_mode = 0
-offset_left = 1055.0
-offset_top = 495.0
-offset_right = 1102.0
-offset_bottom = 526.0
-text = "Shoo"
-
-[node name="ResultLabel" type="Label" parent="." unique_id=2012172139]
-layout_mode = 0
-offset_left = 120.0
-offset_top = 497.0
-offset_right = 160.0
-offset_bottom = 520.0
-
-[node name="OrderTicket" type="Panel" parent="." unique_id=1841514846]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 528.0
-offset_right = 180.0
-offset_bottom = 628.0
-
-[node name="OrderText" type="Label" parent="OrderTicket" unique_id=973217806]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "No specific order"
+offset_left = 476.0
+offset_top = 30.0
+offset_right = 676.0
+offset_bottom = 56.0
 horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="NextButton" type="Button" parent="." unique_id=344326581]
-layout_mode = 0
-offset_left = 353.0
-offset_top = 465.0
-offset_right = 535.0
-offset_bottom = 501.0
-text = "Next "
 
 [node name="DialogueBox" type="Panel" parent="." unique_id=1131076095]
 layout_mode = 0
-offset_left = 753.6228
-offset_top = 88.34814
-offset_right = 1133.6228
-offset_bottom = 178.34814
-theme_override_styles/panel = SubResource("StyleBoxFlat_52qos")
+offset_left = 712.0
+offset_top = 70.0
+offset_right = 1128.0
+offset_bottom = 250.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
 
 [node name="DialogueLabel" type="Label" parent="DialogueBox" unique_id=1069272712]
 custom_minimum_size = Vector2(380, 0)
@@ -116,58 +98,84 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 16.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = -12.0
 theme_override_colors/font_color = Color(0.16078432, 0.18039216, 0.08627451, 1)
 autowrap_mode = 2
+vertical_alignment = 1
 
 [node name="PatienceBar" type="ProgressBar" parent="." unique_id=784701217]
 layout_mode = 0
-offset_left = 468.0
-offset_top = 310.0
-offset_right = 724.0
-offset_bottom = 334.0
+offset_left = 476.0
+offset_top = 270.0
+offset_right = 676.0
+offset_bottom = 290.0
 max_value = 15.0
 value = 15.0
 show_percentage = false
+
+[node name="ResultLabel" type="Label" parent="." unique_id=2012172139]
+layout_mode = 0
+offset_left = 476.0
+offset_top = 296.0
+offset_right = 676.0
+offset_bottom = 322.0
+theme_override_colors/font_color = Color(1, 0.921, 0.556, 1)
+horizontal_alignment = 1
+
+[node name="AskButton" type="Button" parent="." unique_id=1500000002]
+layout_mode = 0
+offset_left = 476.0
+offset_top = 330.0
+offset_right = 676.0
+offset_bottom = 362.0
+text = "Ask a question"
 
 [node name="PatienceTimer" type="Timer" parent="." unique_id=1208977199]
 wait_time = 15.0
 one_shot = true
 
-[node name="Plate" type="Control" parent="." unique_id=1521224186]
-anchors_preset = 0
-offset_left = 580.0
-offset_top = 540.0
-offset_right = 908.0
-offset_bottom = 600.0
-script = ExtResource("4_plate")
+[node name="OrderTicket" type="Panel" parent="." unique_id=1841514846]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 486.0
+offset_right = 190.0
+offset_bottom = 624.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ticket")
 
-[node name="PlateLabel" type="Label" parent="Plate" unique_id=151582264]
+[node name="OrderText" type="Label" parent="OrderTicket" unique_id=973217806]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Plate: empty"
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+theme_override_colors/font_color = Color(0.16078432, 0.18039216, 0.08627451, 1)
+text = "No specific order"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="IngredientTray" type="Control" parent="." unique_id=908378647]
 anchors_preset = 0
-offset_left = 580.0
-offset_top = 452.0
-offset_right = 916.0
-offset_bottom = 508.0
+offset_left = 214.0
+offset_top = 486.0
+offset_right = 730.0
+offset_bottom = 626.0
 
 [node name="Fern" type="Control" parent="IngredientTray" unique_id=1845688522]
 anchors_preset = 0
-offset_right = 48.0
-offset_bottom = 48.0
+offset_left = 0.0
+offset_top = 6.0
+offset_right = 72.0
+offset_bottom = 78.0
 script = ExtResource("5_drag")
 
-[node name="ColorRect" type="ColorRect" parent="IngredientTray/Fern" unique_id=1242185520]
+[node name="Icon" type="TextureRect" parent="IngredientTray/Fern" unique_id=1242185520]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -175,27 +183,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("7_fern")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="IngredientTray/Fern" unique_id=1975462131]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -18.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.99215686, 0.99215686, 0.96862745, 1)
 text = "Fern"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Bamboo" type="Control" parent="IngredientTray" unique_id=465300812]
 anchors_preset = 0
-offset_left = 56.0
-offset_right = 104.0
-offset_bottom = 48.0
+offset_left = 84.0
+offset_top = 6.0
+offset_right = 156.0
+offset_bottom = 78.0
 script = ExtResource("5_drag")
 ingredient_id = "bamboo"
 
-[node name="ColorRect" type="ColorRect" parent="IngredientTray/Bamboo" unique_id=683889729]
+[node name="Icon" type="TextureRect" parent="IngredientTray/Bamboo" unique_id=683889729]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -203,27 +218,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("8_bamboo")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="IngredientTray/Bamboo" unique_id=287566785]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -18.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.99215686, 0.99215686, 0.96862745, 1)
 text = "Bamboo"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Cactus" type="Control" parent="IngredientTray" unique_id=10148830]
 anchors_preset = 0
-offset_left = 112.0
-offset_right = 160.0
-offset_bottom = 48.0
+offset_left = 168.0
+offset_top = 6.0
+offset_right = 240.0
+offset_bottom = 78.0
 script = ExtResource("5_drag")
 ingredient_id = "cactus"
 
-[node name="ColorRect" type="ColorRect" parent="IngredientTray/Cactus" unique_id=636360565]
+[node name="Icon" type="TextureRect" parent="IngredientTray/Cactus" unique_id=636360565]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -231,27 +253,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("9_cactus")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="IngredientTray/Cactus" unique_id=1800383888]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -18.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.99215686, 0.99215686, 0.96862745, 1)
 text = "Cactus"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Beet" type="Control" parent="IngredientTray" unique_id=2016820238]
 anchors_preset = 0
-offset_left = 168.0
-offset_right = 216.0
-offset_bottom = 48.0
+offset_left = 252.0
+offset_top = 6.0
+offset_right = 324.0
+offset_bottom = 78.0
 script = ExtResource("5_drag")
 ingredient_id = "beet"
 
-[node name="ColorRect" type="ColorRect" parent="IngredientTray/Beet" unique_id=1793604008]
+[node name="Icon" type="TextureRect" parent="IngredientTray/Beet" unique_id=1793604008]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -259,27 +288,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("10_beet")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="IngredientTray/Beet" unique_id=2101157965]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -18.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.99215686, 0.99215686, 0.96862745, 1)
 text = "Beet"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Mushroom" type="Control" parent="IngredientTray" unique_id=35448360]
 anchors_preset = 0
-offset_left = 224.0
-offset_right = 272.0
-offset_bottom = 48.0
+offset_left = 336.0
+offset_top = 6.0
+offset_right = 408.0
+offset_bottom = 78.0
 script = ExtResource("5_drag")
 ingredient_id = "mushroom"
 
-[node name="ColorRect" type="ColorRect" parent="IngredientTray/Mushroom" unique_id=963279944]
+[node name="Icon" type="TextureRect" parent="IngredientTray/Mushroom" unique_id=963279944]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -287,27 +323,34 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("11_mushroom")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="IngredientTray/Mushroom" unique_id=1851189169]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -18.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.99215686, 0.99215686, 0.96862745, 1)
 text = "Mushroom"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Flower" type="Control" parent="IngredientTray" unique_id=788220200]
 anchors_preset = 0
-offset_left = 280.0
-offset_right = 328.0
-offset_bottom = 48.0
+offset_left = 420.0
+offset_top = 6.0
+offset_right = 492.0
+offset_bottom = 78.0
 script = ExtResource("5_drag")
 ingredient_id = "flower"
 
-[node name="ColorRect" type="ColorRect" parent="IngredientTray/Flower" unique_id=1731334797]
+[node name="Icon" type="TextureRect" parent="IngredientTray/Flower" unique_id=1731334797]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -315,14 +358,64 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("12_flower")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="IngredientTray/Flower" unique_id=1381726890]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.99215686, 0.99215686, 0.96862745, 1)
+text = "Flower"
+horizontal_alignment = 1
+
+[node name="Plate" type="Control" parent="." unique_id=1521224186]
+anchors_preset = 0
+offset_left = 760.0
+offset_top = 500.0
+offset_right = 920.0
+offset_bottom = 620.0
+script = ExtResource("4_plate")
+
+[node name="PlateTex" type="TextureRect" parent="Plate" unique_id=151582265]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Flower"
-horizontal_alignment = 1
-vertical_alignment = 1
+mouse_filter = 2
+texture = ExtResource("6_platetex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NextButton" type="Button" parent="." unique_id=344326581]
+layout_mode = 0
+offset_left = 960.0
+offset_top = 486.0
+offset_right = 1120.0
+offset_bottom = 520.0
+text = "Next"
+
+[node name="ServeButton" type="Button" parent="." unique_id=1000757209]
+layout_mode = 0
+offset_left = 960.0
+offset_top = 528.0
+offset_right = 1120.0
+offset_bottom = 570.0
+text = "Serve"
+
+[node name="ShooButton" type="Button" parent="." unique_id=102359379]
+layout_mode = 0
+offset_left = 960.0
+offset_top = 578.0
+offset_right = 1120.0
+offset_bottom = 620.0
+text = "Shoo"

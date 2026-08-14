@@ -1,120 +1,208 @@
 extends Control
 
+#----------------NODE REFERENCES------------------
 @onready var name_label: Label = $NameLabel
 @onready var dialogue_label: Label = $DialogueBox/DialogueLabel
+@onready var result_label: Label = $ResultLabel
+@onready var hud_label: Label = $HudLabel
+@onready var portrait: TextureRect = $Portrait
+
 @onready var serve_button: Button = $ServeButton
 @onready var shoo_button: Button = $ShooButton
-@onready var result_label: Label = $ResultLabel
-@onready var portrait: TextureRect = $Portrait
 @onready var next_button: Button = $NextButton
+@onready var ask_button: Button = $AskButton
+
 @onready var plate: Plate = $Plate
 @onready var patience_bar: ProgressBar = $PatienceBar
 @onready var patience_timer: Timer = $PatienceTimer
 @onready var order_text: Label = $OrderTicket/OrderText
 
-var day_one: Array[Customer] = [
+#----------------DAY ROSTERS------------------
+#customers split across two days. day 2 is the harder shift.
+var _day1: Array[Customer] = [
 	preload("res://data/customers/Trisha.tres"),
 	preload("res://data/customers/Steg.tres"),
 	preload("res://data/customers/Ray.tres"),
-	preload("res://data/customers/Bronte.tres"),
 ]
+var _day2: Array[Customer] = [
+	preload("res://data/customers/Bronte.tres"),
+	preload("res://data/customers/Dilo.tres"),
+	preload("res://data/customers/Trisha.tres"),
+]
+var day_rosters := [_day1, _day2]
 
-#check for if we are currently in between customers
-var awaiting_advance := false
+#----------------CONVERSATION STATE------------------
+# phase: "intro" = reading arrival lines, "ready" = can ask/plate/judge,
+#        "judged" = already resolved; only Next works
+var phase := "intro"
+var intro_index := 0
+var intro_lines: Array = []
+var has_asked := false
+
+# what Next does: "customer" -> next dino, "newday" -> next day
+var pending_advance := ""
 
 #----------------TYPEWRITER STATE------------------
-var full_line := ""              # the complete line we're revealing
-var shown_chars := 0             # how many characters are visible so far
-var is_typing := false           # true while letters are still appearing
-const TYPE_SPEED := 0.03         # seconds between letters (smaller = faster)
-var _type_timer: Timer           # ticks once per letter
+var full_line := ""
+var shown_chars := 0
+var is_typing := false
+const TYPE_SPEED := 0.03
+var _type_timer: Timer
 
 func _ready() -> void:
-	Game.start_day(day_one)
+	Game.reset()
 
 	serve_button.pressed.connect(_on_serve)
 	shoo_button.pressed.connect(_on_shoo)
-	next_button.pressed.connect(_advance)
+	next_button.pressed.connect(_on_next)
+	ask_button.pressed.connect(_on_ask)
 	patience_timer.timeout.connect(_on_patience_timeout)
 
-	# Build the typewriter timer in code (no scene node needed).
 	_type_timer = Timer.new()
 	_type_timer.wait_time = TYPE_SPEED
 	_type_timer.timeout.connect(_on_type_tick)
 	add_child(_type_timer)
 
+	Game.stats_changed.connect(_update_hud)
+
+	Game.start_day(day_rosters[0])
+	_update_hud()
 	_show_current_customer()
 
+#----------------SHOWING A CUSTOMER------------------
 func _show_current_customer() -> void:
 	var cust: Customer = Game.get_current_customer()
-
 	if cust == null:
 		_end_day()
 		return
 
+	#reset per-customer state.
+	phase = "intro"
+	intro_index = 0
+	intro_lines = cust.intro_lines
+	has_asked = false
+	pending_advance = ""
 	plate.clear_plate()
 
-	patience_timer.wait_time = cust.patience_seconds
+	#patience timer only starts once they're done talking (in _enter_ready_phase).
+	patience_timer.stop()
 	patience_bar.max_value = cust.patience_seconds
 	patience_bar.value = cust.patience_seconds
-	patience_timer.start()
 
-	awaiting_advance = false
 	result_label.text = ""
 	name_label.text = cust.display_name
 	order_text.text = _order_ticket_text(cust)
 	_set_portrait(cust.portrait_neutral)
-	_set_buttons_enabled(true)
-	next_button.visible = false              # hide Next until they've judged
 
-	_start_typing(_first_line(cust))         # type the dialogue out
+	#during intro only Next is usable.
+	next_button.visible = true
+	next_button.text = "Next"
+	ask_button.visible = false
+	_set_judge_enabled(false)
+	_set_tray_enabled(false)
 
-func _first_line(cust: Customer) -> String:
-	var dialogue = cust.dialogue_line
-	if dialogue is Array:
-		return str(dialogue[0]) if dialogue.size() > 0 else ""
+	_start_typing(_current_intro_line())
 
-	return str(dialogue)
+func _current_intro_line() -> String:
+	if intro_index < intro_lines.size():
+		return str(intro_lines[intro_index])
+	return ""
 
-#---------------------ORDER TICKET------------------------
+#a carnivore looks a little too pleased on its final intro line - a subtle
+#'i'm fooling you' tell. herbivores stay neutral throughout.
+func _update_intro_portrait() -> void:
+	if _showing_disgust:
+		return
+	var cust: Customer = Game.get_current_customer()
+	if cust == null:
+		return
+	var is_last_line := intro_index == intro_lines.size() - 1
+	if cust.is_carnivore and is_last_line and cust.portrait_happy != null:
+		portrait.texture = cust.portrait_happy
+	else:
+		portrait.texture = cust.portrait_neutral
+
 func _order_ticket_text(cust: Customer) -> String:
 	if cust.wanted_ingredients.is_empty():
 		return "No specific order"
-
 	var capitalized: Array[String] = []
 	for ingredient_id in cust.wanted_ingredients:
 		capitalized.append(str(ingredient_id).capitalize())
 	return "Order:\n%s" % ", ".join(capitalized)
 
-#---------------------TYPEWRITER------------------------
-#begin revealing a line one character at a time.
-func _start_typing(text: String) -> void:
-	full_line = text
-	shown_chars = 0
-	dialogue_label.text = ""
-	is_typing = true
-	_type_timer.start()
+#----------------THE ASK BUTTON------------------
+func _on_ask() -> void:
+	if phase != "ready" or has_asked:
+		return
+	var cust: Customer = Game.get_current_customer()
+	if cust == null:
+		return
+	has_asked = true
+	ask_button.visible = false
+	if cust.question_answer != "":
+		_start_typing(cust.question_answer)
 
-#called by the timer once per letter.
-func _on_type_tick() -> void:
-	shown_chars += 1
-	dialogue_label.text = full_line.substr(0, shown_chars)
-	if shown_chars >= full_line.length():
+#----------------JUDGING------------------------
+func _on_serve() -> void:
+	if is_typing:
 		_finish_typing()
+		return
+	if phase != "ready":
+		return
+	_judge(false)
 
-#instantly show the whole line
-func _finish_typing() -> void:
-	_type_timer.stop()
-	dialogue_label.text = full_line
-	shown_chars = full_line.length()
-	is_typing = false
+func _on_shoo() -> void:
+	if is_typing:
+		_finish_typing()
+		return
+	if phase != "ready":
+		return
+	_judge(true)
 
-#---------------------TEMPORARY PORTRAIT HANDLING
-func _set_portrait(tex: Texture2D) -> void:
-	if tex != null:
-		portrait.texture = tex
+func _judge(chose_shoo: bool) -> void:
+	var cust: Customer = Game.get_current_customer()
+	if cust == null:
+		return
 
-#---------------------PATIENCE------------------------
+	patience_timer.stop()
+
+	var correct: bool = Game.judge(cust, chose_shoo, plate.ingredients)
+
+	var reaction := ""
+	if correct:
+		if chose_shoo:
+			_set_portrait(cust.portrait_caught)   # carnivore caught -> fuss
+			reaction = cust.shooed_right
+		else:
+			_set_portrait(cust.portrait_happy)    # herbivore served -> happy
+			reaction = cust.served_right
+		result_label.text = "CORRECT!"
+	else:
+		if chose_shoo:
+			_set_portrait(cust.portrait_angry)    # herbivore wrongly shooed -> upset
+			reaction = cust.shooed_wrong
+		else:
+			_set_portrait(cust.portrait_happy)    # carnivore fooled you -> pleased
+			reaction = cust.served_wrong
+		result_label.text = "WRONG (lives: %d)" % Game.lives
+
+	plate.clear_plate()
+	phase = "judged"
+	_set_judge_enabled(false)
+	_set_tray_enabled(false)
+	ask_button.visible = false
+
+	if reaction != "":
+		_start_typing(reaction)
+
+	if Game.is_game_over():
+		_game_over()
+	else:
+		pending_advance = "customer"
+		next_button.visible = true
+		next_button.text = "Next"
+
+#----------------PATIENCE------------------------
 func _process(_delta: float) -> void:
 	if not patience_timer.is_stopped():
 		patience_bar.value = patience_timer.time_left
@@ -129,89 +217,182 @@ func _on_patience_timeout() -> void:
 	result_label.text = "%s got impatient and left! (lives: %d)" % [cust.display_name, Game.lives]
 
 	plate.clear_plate()
-
-	awaiting_advance = true
-	_set_buttons_enabled(false)              # lock Serve/Shoo, same as a judged answer
-	next_button.visible = true               # reveal Next so they can move on
+	phase = "judged"
+	_set_judge_enabled(false)
+	_set_tray_enabled(false)
+	ask_button.visible = false
 
 	if Game.is_game_over():
 		_game_over()
-
-
-
-#----------------JUDGING------------------------
-#if not not SHOO then serve
-func _on_serve() -> void:
-	if is_typing:
-		_finish_typing()                      # first click just completes the text
-		return
-	if awaiting_advance:
-		return                                # already judged; use Next
-	_judge(false)
-
-func _on_shoo()-> void:
-	if is_typing:
-		_finish_typing()                      # first click just completes the text
-		return
-	if awaiting_advance:
-		return                                # already judged; use Next
-	_judge(true)
-
-func _judge(chose_shoo: bool) -> void:
-	var cust: Customer = Game.get_current_customer()
-	if cust == null:
-		return
-
-	patience_timer.stop()
-
-	var correct: bool = Game.judge(cust, chose_shoo, plate.ingredients)
-
-	#expression handling
-	if correct:
-		if chose_shoo:
-			_set_portrait(cust.portrait_caught)
-		else:
-			_set_portrait(cust.portrait_happy)
-		result_label.text = "CORRECT!"
 	else:
-		_set_portrait(cust.portrait_angry)
-		result_label.text = "WRONG (lives: %d)" % Game.lives
+		pending_advance = "customer"
+		next_button.visible = true
+		next_button.text = "Next"
 
-	plate.clear_plate()
+#----------------ADVANCING------------------------
+func _on_next() -> void:
+	if is_typing:
+		_finish_typing()
+		return
 
-	awaiting_advance = true
-	_set_buttons_enabled(false)              # lock Serve/Shoo after judging
-	next_button.visible = true               # reveal Next so they can move on
+	if phase == "intro":
+		intro_index += 1
+		if intro_index < intro_lines.size():
+			_start_typing(_current_intro_line())
+			_update_intro_portrait()
+		else:
+			_enter_ready_phase()
+		return
 
-	if Game.is_game_over():
-		_game_over()
+	if phase == "judged":
+		if pending_advance == "customer":
+			_advance_customer()
+		elif pending_advance == "newday":
+			_start_next_day()
 
+#intro finished: unlock ask + judging + plating, and start the patience clock.
+func _enter_ready_phase() -> void:
+	phase = "ready"
+	next_button.visible = false
 
-#--------------Advancing
+	var cust: Customer = Game.get_current_customer()
+	if cust != null and cust.question_answer != "" and not has_asked:
+		ask_button.text = cust.question_prompt
+		ask_button.visible = true
 
-func _advance() -> void:
-	var has_more: bool = Game.next_customer()
-	if has_more:
+	_set_judge_enabled(true)
+	_set_tray_enabled(true)
+
+	if cust != null:
+		patience_timer.wait_time = cust.patience_seconds
+		patience_timer.start()
+
+func _advance_customer() -> void:
+	if Game.next_customer():
 		_show_current_customer()
 	else:
 		_end_day()
 
+#----------------DAY TRANSITIONS------------------------
 func _end_day() -> void:
 	_finish_typing()
-	_set_buttons_enabled(false)
-	next_button.visible = false
+	patience_timer.stop()
+	_set_judge_enabled(false)
+	_set_tray_enabled(false)
+	ask_button.visible = false
+	plate.clear_plate()
 	name_label.text = "Day %d complete!" % Game.day
-	dialogue_label.text = ""
-	result_label.text = "Score: %d    Lives: %d" % [Game.score, Game.lives]
+	dialogue_label.text = "Score: %d    Lives: %d\nClick Next for the next shift." % [Game.score, Game.lives]
+	result_label.text = ""
+	order_text.text = ""
+	pending_advance = "newday"
+	phase = "judged"
+	next_button.visible = true
+	next_button.text = "Next day"
+
+func _start_next_day() -> void:
+	if Game.next_day():
+		Game.start_day(day_rosters[Game.day - 1])
+		_show_day_card()
+	else:
+		_win()
+
+func _show_day_card() -> void:
+	name_label.text = "Day %d" % Game.day
+	dialogue_label.text = "A new shift begins. Stay sharp - the wolves are hungrier today."
+	result_label.text = ""
+	order_text.text = ""
+	_set_portrait(null)
+	ask_button.visible = false
+	_set_judge_enabled(false)
+	_set_tray_enabled(false)
+	phase = "judged"
+	pending_advance = "customer"
+	next_button.visible = true
+	next_button.text = "Start day"
+
+#----------------END STATES------------------------
+func _win() -> void:
+	_finish_typing()
+	patience_timer.stop()
+	_set_judge_enabled(false)
+	_set_tray_enabled(false)
+	ask_button.visible = false
+	next_button.visible = false
+	name_label.text = "YOU MADE IT!"
+	dialogue_label.text = "You survived all %d days. The cafe is a hit and every leaf-lover is safe." % Game.TOTAL_DAYS
+	result_label.text = "Final score: %d" % Game.score
 
 func _game_over() -> void:
 	_finish_typing()
-	_set_buttons_enabled(false)
+	patience_timer.stop()
+	_set_judge_enabled(false)
+	_set_tray_enabled(false)
+	ask_button.visible = false
 	next_button.visible = false
+	pending_advance = ""
 	name_label.text = "GAME OVER"
 	dialogue_label.text = "The cafe closed for good."
 	result_label.text = "Final score: %d" % Game.score
 
-func _set_buttons_enabled(on: bool) -> void:
+#----------------TYPEWRITER------------------------
+func _start_typing(text: String) -> void:
+	full_line = text
+	shown_chars = 0
+	dialogue_label.text = ""
+	is_typing = true
+	_type_timer.start()
+
+func _on_type_tick() -> void:
+	shown_chars += 1
+	dialogue_label.text = full_line.substr(0, shown_chars)
+	if shown_chars >= full_line.length():
+		_finish_typing()
+
+func _finish_typing() -> void:
+	_type_timer.stop()
+	dialogue_label.text = full_line
+	shown_chars = full_line.length()
+	is_typing = false
+
+#----------------DISGUST REACTION------------------------
+# called by a DraggableIngredient while it is being dragged over the portrait.
+# a disguised carnivore recoils from veggies with a disgusted face; the moment
+# the food moves away (or is dropped) the neutral face returns.
+var _showing_disgust := false
+
+func notify_food_near_portrait(is_near: bool) -> void:
+	if phase != "ready":
+		return
+	var cust: Customer = Game.get_current_customer()
+	if cust == null or not cust.is_carnivore or cust.portrait_disgusted == null:
+		return
+	if is_near and not _showing_disgust:
+		_showing_disgust = true
+		portrait.texture = cust.portrait_disgusted
+	elif not is_near and _showing_disgust:
+		_showing_disgust = false
+		portrait.texture = cust.portrait_neutral
+
+#----------------HELPERS------------------------
+func _set_portrait(tex: Texture2D) -> void:
+	_showing_disgust = false
+	if tex != null:
+		portrait.texture = tex
+
+func _set_judge_enabled(on: bool) -> void:
 	serve_button.disabled = not on
 	shoo_button.disabled = not on
+
+#enables/disables dragging by toggling mouse input on each tray item.
+func _set_tray_enabled(on: bool) -> void:
+	var tray := get_node_or_null("IngredientTray")
+	if tray == null:
+		return
+	for item in tray.get_children():
+		if item is Control:
+			item.mouse_filter = Control.MOUSE_FILTER_STOP if on else Control.MOUSE_FILTER_IGNORE
+
+func _update_hud() -> void:
+	if hud_label != null:
+		hud_label.text = "Day %d    Score: %d    Lives: %d" % [Game.day, Game.score, Game.lives]

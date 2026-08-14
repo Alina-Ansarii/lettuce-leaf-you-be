@@ -119,7 +119,7 @@ func _judge(chose_shoo: bool) -> void:
 	if cust == null:
 		return
 
-	var correct: bool = Game.judge(cust, chose_shoo)
+	var correct: bool = Game.judge(cust, chose_shoo, plate.ingredients)
 
 	#expression handling
 	if correct:
@@ -131,6 +131,8 @@ func _judge(chose_shoo: bool) -> void:
 	else:
 		_set_portrait(cust.portrait_angry)
 		result_label.text = "WRONG (lives: %d)" % Game.lives
+
+	plate.clear_plate()
 
 	awaiting_advance = true
 	_set_buttons_enabled(false)              # lock Serve/Shoo after judging

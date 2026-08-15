@@ -17,6 +17,12 @@ extends Control
 @onready var patience_timer: Timer = $PatienceTimer
 @onready var order_text: Label = $OrderTicket/OrderText
 
+@onready var click_player: AudioStreamPlayer = $ClickPlayer
+@onready var question_player: AudioStreamPlayer = $QuestionPlayer
+@onready var confirmation_player: AudioStreamPlayer = $ConfirmationPlayer
+@onready var wrong_player: AudioStreamPlayer = $WrongPlayer
+@onready var ticking_player: AudioStreamPlayer = $TickingPlayer
+
 #----------------DAY ROSTERS------------------
 #customers split across two days. day 2 is the harder shift.
 var _day1: Array[Customer] = [
@@ -63,6 +69,9 @@ func _ready() -> void:
 	_type_timer.timeout.connect(_on_type_tick)
 	add_child(_type_timer)
 
+	if ticking_player.stream != null:
+		ticking_player.stream.loop = true
+
 	Game.stats_changed.connect(_update_hud)
 
 	Game.start_day(day_rosters[0])
@@ -86,6 +95,7 @@ func _show_current_customer() -> void:
 
 	#patience timer only starts once they're done talking (in _enter_ready_phase).
 	patience_timer.stop()
+	_stop_ticking()
 	patience_bar.max_value = cust.patience_seconds
 	patience_bar.value = cust.patience_seconds
 
@@ -101,6 +111,7 @@ func _show_current_customer() -> void:
 	_set_judge_enabled(false)
 	_set_tray_enabled(false)
 
+	question_player.play()
 	_start_typing(_current_intro_line())
 
 func _current_intro_line() -> String:
@@ -144,6 +155,7 @@ func _on_ask() -> void:
 
 #----------------JUDGING------------------------
 func _on_serve() -> void:
+	click_player.play()
 	if is_typing:
 		_finish_typing()
 		return
@@ -152,6 +164,7 @@ func _on_serve() -> void:
 	_judge(false)
 
 func _on_shoo() -> void:
+	click_player.play()
 	if is_typing:
 		_finish_typing()
 		return
@@ -165,11 +178,13 @@ func _judge(chose_shoo: bool) -> void:
 		return
 
 	patience_timer.stop()
+	_stop_ticking()
 
 	var correct: bool = Game.judge(cust, chose_shoo, plate.ingredients)
 
 	var reaction := ""
 	if correct:
+		confirmation_player.play()
 		if chose_shoo:
 			_set_portrait(cust.portrait_caught)   # carnivore caught -> fuss
 			reaction = cust.shooed_right
@@ -178,6 +193,7 @@ func _judge(chose_shoo: bool) -> void:
 			reaction = cust.served_right
 		result_label.text = "CORRECT!"
 	else:
+		wrong_player.play()
 		if chose_shoo:
 			_set_portrait(cust.portrait_angry)    # herbivore wrongly shooed -> upset
 			reaction = cust.shooed_wrong
@@ -212,6 +228,8 @@ func _on_patience_timeout() -> void:
 	if cust == null:
 		return
 
+	_stop_ticking()
+	wrong_player.play()
 	Game.penalize_impatience()
 	_set_portrait(cust.portrait_angry)
 	result_label.text = "%s got impatient and left! (lives: %d)" % [cust.display_name, Game.lives]
@@ -231,6 +249,7 @@ func _on_patience_timeout() -> void:
 
 #----------------ADVANCING------------------------
 func _on_next() -> void:
+	click_player.play()
 	if is_typing:
 		_finish_typing()
 		return
@@ -266,6 +285,7 @@ func _enter_ready_phase() -> void:
 	if cust != null:
 		patience_timer.wait_time = cust.patience_seconds
 		patience_timer.start()
+		_start_ticking()
 
 func _advance_customer() -> void:
 	if Game.next_customer():
@@ -277,6 +297,7 @@ func _advance_customer() -> void:
 func _end_day() -> void:
 	_finish_typing()
 	patience_timer.stop()
+	_stop_ticking()
 	_set_judge_enabled(false)
 	_set_tray_enabled(false)
 	ask_button.visible = false
@@ -315,6 +336,7 @@ func _show_day_card() -> void:
 func _win() -> void:
 	_finish_typing()
 	patience_timer.stop()
+	_stop_ticking()
 	_set_judge_enabled(false)
 	_set_tray_enabled(false)
 	ask_button.visible = false
@@ -326,6 +348,7 @@ func _win() -> void:
 func _game_over() -> void:
 	_finish_typing()
 	patience_timer.stop()
+	_stop_ticking()
 	_set_judge_enabled(false)
 	_set_tray_enabled(false)
 	ask_button.visible = false
@@ -375,6 +398,12 @@ func notify_food_near_portrait(is_near: bool) -> void:
 		portrait.texture = cust.portrait_neutral
 
 #----------------HELPERS------------------------
+func _start_ticking() -> void:
+	ticking_player.play()
+
+func _stop_ticking() -> void:
+	ticking_player.stop()
+
 func _set_portrait(tex: Texture2D) -> void:
 	_showing_disgust = false
 	if tex != null:

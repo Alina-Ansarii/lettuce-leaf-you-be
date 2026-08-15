@@ -12,6 +12,12 @@
 [ext_resource type="Texture2D" uid="uid://bxwiy0guuww0b" path="res://art/food/beets.png" id="10_beet"]
 [ext_resource type="Texture2D" uid="uid://cluvna1g12dlw" path="res://art/food/mushroom.png" id="11_mushroom"]
 [ext_resource type="Texture2D" uid="uid://0ml4siunbx3u" path="res://art/food/flower.png" id="12_flower"]
+[ext_resource type="AudioStream" path="res://audio/click_002.ogg" id="13_click_sfx"]
+[ext_resource type="AudioStream" path="res://audio/drop_002.ogg" id="14_drop_sfx"]
+[ext_resource type="AudioStream" path="res://audio/question_002.ogg" id="15_question_sfx"]
+[ext_resource type="AudioStream" path="res://audio/confirmation_002.ogg" id="16_confirmation_sfx"]
+[ext_resource type="AudioStream" path="res://audio/dragon-studio-clock-ticking-down-376897.mp3" id="17_ticking_sfx"]
+[ext_resource type="AudioStream" path="res://audio/freesound_community-failure-1-89170.mp3" id="18_wrong_sfx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
 bg_color = Color(0.8117647, 0.7411765, 0.54901963, 1)
@@ -396,6 +402,9 @@ texture = ExtResource("6_platetex")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="DropPlayer" type="AudioStreamPlayer" parent="Plate"]
+stream = ExtResource("14_drop_sfx")
+
 [node name="NextButton" type="Button" parent="." unique_id=344326581]
 layout_mode = 0
 offset_left = 960.0
@@ -419,3 +428,18 @@ offset_top = 578.0
 offset_right = 1120.0
 offset_bottom = 620.0
 text = "Shoo"
+
+[node name="ClickPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_click_sfx")
+
+[node name="QuestionPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_question_sfx")
+
+[node name="ConfirmationPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_confirmation_sfx")
+
+[node name="WrongPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_wrong_sfx")
+
+[node name="TickingPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_ticking_sfx")

@@ -9,6 +9,8 @@ signal contents_changed(ingredients: Array)
 
 var ingredients: Array[String] = []
 
+@onready var drop_player: AudioStreamPlayer = $DropPlayer
+
 # maps an ingredient id to its plated-food texture. "beet" -> beets art.
 const PLATED_ICONS := {
 	"fern": "res://art/food/fern-plate.png",
@@ -24,6 +26,7 @@ func _ready() -> void:
 
 func add_ingredient(id: String) -> void:
 	ingredients.append(id)
+	drop_player.play()
 	_spawn_icon(id)
 	contents_changed.emit(ingredients)
 
